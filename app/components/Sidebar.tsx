@@ -1,10 +1,9 @@
 import Link from "next/link";
 
-
 export default function Sidebar() {
     return (
         <>
-            <div className="flex flex-col space-y-2 w-[26rem] rounded-lg">
+            <div className="flex flex-col space-y-2 w-[26rem] rounded-lg text-[15px]">
                 <div className="flex flex-col py-5 space-y-6 font-medium rounded-lg bg-neutral-900">
                     <Link href="/" className="flex space-x-5 items-center mx-6 font-semibold text-neutral-300 hover:text-gray-100">
                         <svg data-encore-id="icon" role="img" width="24" height="24" fill="currentColor" aria-hidden="true" className="Svg-sc-ytk21e-0 iYxpxA home-icon" viewBox="0 0 24 24"><path d="M12.5 3.247a1 1 0 0 0-1 0L4 7.577V20h4.5v-6a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v6H20V7.577l-7.5-4.33zm-2-1.732a3 3 0 0 1 3 0l7.5 4.33a2 2 0 0 1 1 1.732V21a1 1 0 0 1-1 1h-6.5a1 1 0 0 1-1-1v-6h-3v6a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.577a2 2 0 0 1 1-1.732l7.5-4.33z"></path></svg>
