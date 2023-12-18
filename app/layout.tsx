@@ -4,6 +4,7 @@ import './globals.css'
 import Sidebar from '@/app/components/Sidebar'
 import { getServerSession } from 'next-auth';
 import SessionProvider  from './components/SessionProvider';
+import Header from '@/app/components/Header'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -24,7 +25,10 @@ export default async function RootLayout({
         <SessionProvider session={session}>
           <main className='flex space-x-2 p-2 h-screen'>
             <Sidebar />
-            {children}
+            <div className='flex flex-grow flex-col rounded-lg bg-neutral-950 '> 
+              <Header />
+              {children}
+            </div>
           </main>
         </SessionProvider>
         </body>

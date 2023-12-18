@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "date-fns": "^2.30.0",
     "flowbite": "^2.2.1",
     "next": "14.0.4",
     "next-auth": "^4.24.5",

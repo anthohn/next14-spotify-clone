@@ -40,7 +40,12 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'charts-images.scdn.co',
+        hostname: 'charts-images.scdn.co', 
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'thisis-images.spotifycdn.com',
         pathname: '/**',
       },
       

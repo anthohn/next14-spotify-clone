@@ -7,29 +7,16 @@ export interface Artist {
   images: Array<{ url: string }>;
 }
 
-export interface RecentlyPlayedTrack {
-  track: {
-    id: string;
-    name: string;
-    external_urls: {
-      spotify: string;
-    };
-    album: {
-      images: Array<{ url: string }>;
-    };
-    artists: Artist[];
-  };
-  played_at: string;
-}
-
 export interface Track {
   id: string;
   name: string;
+  duration_ms: number;
   href: {
     spotify: string;
   };
   album: {
     images: Array<{ url: string }>;
+    name: string;
   };
   artists: Artist[];
   played_at: string;
@@ -47,6 +34,9 @@ export interface Album {
 }
 
 export interface Playlist {
+  followers: {
+    total: number;
+  }
   id: string;
   name: string;
   external_urls: {
@@ -54,13 +44,20 @@ export interface Playlist {
   };
   images: Array<{ url: string }>;
   owner: {
+    href: string;
     id: string;
     display_name?: string;
   };
   public?: boolean;
-  snapshot_id: string;
   tracks: {
     total: number;
     href: string;
+    items: PlaylistItem[];
+    album: Album;
   };
+}
+
+export interface PlaylistItem {
+  added_at: string;
+  track: Track; 
 }
