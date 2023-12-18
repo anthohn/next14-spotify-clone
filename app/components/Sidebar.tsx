@@ -62,7 +62,9 @@ export default async function Sidebar() {
                     </div>
                     <div>
                         {playlists.map((playlist) => (
-                            <a href={`/playlist/${playlist.id}`} rel="noopener noreferrer" key={`${playlist.id}`} className="flex hover:bg-neutral-900 w-full rounded items-center py-2 space-x-3"> 
+                            <Link 
+                                href={`/playlist/${playlist.id}`} rel="noopener noreferrer" key={`${playlist.id}`} 
+                                className="flex hover:bg-neutral-900 w-full rounded items-center py-2 space-x-3"> 
                                 <Image 
                                     src={playlist.images[0]?.url} alt={playlist.name} 
                                     className="rounded ml-2" 
@@ -79,7 +81,7 @@ export default async function Sidebar() {
                                     <p>{ playlist.owner.display_name }</p>
                                 </div>
                                 </div>
-                            </a>
+                            </Link>
                         ))}
                     </div>
                 </div>
