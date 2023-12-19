@@ -61,3 +61,25 @@ export interface PlaylistItem {
   added_at: string;
   track: Track; 
 }
+
+export interface Show {
+  show: {
+    id: string;
+    name: string;
+    images: Array<{ url: string }>;
+    publisher: string;
+  }
+  episodes: {
+    total : number;
+    items : SpotifyEpisode[];
+  };
+}
+
+export interface SpotifyEpisode {
+  id: string;
+  name: string;
+  description: string;
+  images: Array<{ url: string }>;
+  release_date: string;
+  duration_ms: number;
+}

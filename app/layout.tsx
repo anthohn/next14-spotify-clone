@@ -25,7 +25,7 @@ export default async function RootLayout({
         <SessionProvider session={session}>
           <main className='flex space-x-2 p-2 h-screen'>
             <Sidebar />
-            <div className='flex flex-grow flex-col rounded-lg bg-neutral-950 '> 
+            <div className='flex flex-grow flex-col rounded-lg bg-[#121212]'> 
               <Header />
               {children}
             </div>
