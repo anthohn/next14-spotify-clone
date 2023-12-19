@@ -5,6 +5,7 @@ import Sidebar from '@/app/components/Sidebar'
 import { getServerSession } from 'next-auth';
 import SessionProvider  from './components/SessionProvider';
 import Header from '@/app/components/Header'
+import BottomBar from '@/app/components/BottomBar'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,13 +24,16 @@ export default async function RootLayout({
     <html lang="fr">
       <body className={inter.className}>
         <SessionProvider session={session}>
-          <main className='flex space-x-2 p-2 h-screen'>
-            <Sidebar />
-            <div className='flex flex-grow flex-col rounded-lg bg-[#121212]'> 
-              <Header />
-              {children}
+          <div className='flex flex-col h-screen space-y-2 p-2'>
+            <div className='flex flex-grow space-x-2 '>
+              <Sidebar />
+              <div className='flex flex-grow flex-col rounded-lg bg-[#121212]'> 
+                <Header />
+                {children}
+              </div>
             </div>
-          </main>
+            <BottomBar />
+          </div>
         </SessionProvider>
         </body>
     </html>

@@ -1,20 +1,22 @@
 "use server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth.js";
-import { Playlist } from "@/types";
+import { CurrentTrack } from "@/types";
 
-const getPlaylists = async (): Promise<Playlist[]> => {
+const getCurrentPlaylingTrack = async (): Promise<CurrentTrack> => {
     
   const userSession  = await getServerSession(authOptions);
+  const id = userSession.user.id 
   const token = userSession.accessToken
 
-  const response = await fetch(`https://api.spotify.com/v1/me/playlists?limit=2`, {
+  const response = await fetch(`https://api.spotify.com/v1/me/player/currently-playing`, {
     headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
     });
     const data = await response.json();
-  return (data.items as any) || [];
+  return (data as any) || [];
+
 };
-export default getPlaylists;
+export default getCurrentPlaylingTrack;
