@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth.js";
 import { CurrentTrack } from "@/types";
 
-const getCurrentPlaylingTrack = async (): Promise<CurrentTrack> => {
+const getCurrentPlayingTrack = async (): Promise<CurrentTrack> => {
     
   const userSession  = await getServerSession(authOptions);
   const id = userSession.user.id 
@@ -16,7 +16,8 @@ const getCurrentPlaylingTrack = async (): Promise<CurrentTrack> => {
       },
     });
     const data = await response.json();
+    
   return (data as any) || [];
 
 };
-export default getCurrentPlaylingTrack;
+export default getCurrentPlayingTrack;
