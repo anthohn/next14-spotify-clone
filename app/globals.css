@@ -5,3 +5,57 @@
 body {
   background: black;
 }
+
+/* Styles pour l'input range personnalisé */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 67%;
+  height: 5px;
+  border-radius: 20px; /* Coins arrondis */
+  outline: none;
+  /* La couleur de fond sera définie via une variable CSS pour le track */
+  background: var(--range-track-background, #4D4D4D);
+}
+
+input[type="range"]:hover {
+  /* Pour l'effet hover, on change juste la couleur de la poignée */
+  --range-thumb-background: #1DB954;
+}
+
+/* Personnalisation de la poignée (boule) */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px; /* Largeur de la poignée */
+  height: 12px; /* Hauteur de la poignée */
+  /* La couleur de fond de la poignée sera définie via une variable CSS */
+  background-color: var(--range-thumb-background, grey);
+  border-radius: 50%; /* Rend la poignée ronde */
+  cursor: pointer; /* Curseur pointer au survol */
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  background-color: var(--range-thumb-background, grey);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+input[type="range"]::-ms-thumb {
+  width: 12px;
+  height: 12px;
+  background-color: var(--range-thumb-background, grey);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Firefox spécifique pour le track avant la poignée */
+input[type="range"]::-moz-range-progress {
+  background-color: #1DB954;
+}
+
+input[type="range"]::-moz-range-track {
+  background-color: #4D4D4D;
+}

@@ -1,20 +1,22 @@
 'use client'
 import getCurrentPlayingTrack from "@/actions/getCurrentPlayingTrack";
-import { CurrentTrack } from "@/types";
-import { Track } from '@/types';
+import { Track, CurrentTrack, GetPlaybackState } from '@/types';
 import skipToNext from "@/actions/Player/skipToNext";
 import skipToPrevious from "@/actions/Player/skipToPrevious";
 import pausePlayback from "@/actions/Player/pausePlayback";
 import resumePlayback from "@/actions/Player/resumePlayback";
+import getPlaybackState from "@/actions/Player/getPlaybackState"
+import seekToPosition from "@/actions/Player/seekToPosition";
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 
 interface PlayerControlsProps {
     currentTrack: CurrentTrack;
     isTrackLiked: Track;
+    playbackState: GetPlaybackState;
 }
 
-export default function PlayerControls({ currentTrack, isTrackLiked }: PlayerControlsProps) {
+export default function PlayerControls({ currentTrack, isTrackLiked, playbackState }: PlayerControlsProps) {
 
     const [currentTrackInfo, setCurrentTrackInfo] = useState({
         isPlaying: currentTrack.is_playing,
@@ -72,6 +74,52 @@ export default function PlayerControls({ currentTrack, isTrackLiked }: PlayerCon
 
         return () => clearInterval(interval); // Nettoyage à la désactivation du composant
     }, []);
+
+    //progress timeline
+    const [trackProgress, setTrackProgress] = useState({
+        currentPosition: playbackState.progress_ms,
+        totalDuration: playbackState.item.duration_ms
+    });
+
+    // Polling timeLine
+    useEffect(() => {
+        const interval = setInterval(async () => {
+            const playbackState = await getPlaybackState();
+            setTrackProgress({
+                currentPosition: playbackState.progress_ms,
+                totalDuration: playbackState.item.duration_ms
+            });
+        }, 1000); // Mise à jour chaque seconde
+    
+        return () => clearInterval(interval);
+    }, []);
+
+    // Function convert milliseconds in sc
+    function formatTime(milliseconds: number) {
+        const totalSeconds = Math.floor(milliseconds / 1000);
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+    
+        // Ajoute un zéro devant les secondes si moins de 10 pour maintenir le format mm:ss
+        const paddedSeconds = seconds < 10 ? `0${seconds}` : seconds;
+    
+        return `${minutes}:${paddedSeconds}`;
+    }
+
+    const handleTimelineChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        // Convertir la valeur du curseur (event.target.value) en nombre
+        const newPosition = Number(event.target.value);
+        
+        // Appeler seekToPosition pour changer la position de lecture
+        seekToPosition(newPosition).then(() => {
+            // Mettre à jour la position actuelle après le changement
+            setTrackProgress(prevProgress => ({
+                ...prevProgress,
+                currentPosition: newPosition
+            }));
+        });
+    };
+    
   
     return (
         <div className="flex justify-between h-[72px] text-white">
@@ -124,12 +172,13 @@ export default function PlayerControls({ currentTrack, isTrackLiked }: PlayerCon
                     </button>
                 </div>
                 <div className="flex space-x-2 w-full justify-center text-[11px] text-neutral-400 items-center">
-                    <p>2:15</p>
-                    <div className=" items-center w-8/12 bg-[#4D4D4D] rounded-full h-1 dark:bg-gray-700">
-                        <div className="bg-[#FFFFFF] hover:bg-[#1DB954] h-1 rounded-full w-2/6"></div>
-                    </div>
-                    <p>3:19</p>
+                    <p>{formatTime(trackProgress.currentPosition)}</p>
+                    <input type="range" min="0" max={trackProgress.totalDuration} value={trackProgress.currentPosition} onChange={handleTimelineChange} className="slider hover:bg-green-400" id="myRange" />
+                    <p>{formatTime(trackProgress.totalDuration)}</p>
                 </div>
+                
+
+            
             </div>
             <div className="w-3/12 flex space-x-4 justify-end items-center p-[7px]">
                 <button>
