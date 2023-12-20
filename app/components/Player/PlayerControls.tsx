@@ -7,7 +7,7 @@ import skipToPrevious from "@/actions/Player/skipToPrevious";
 import pausePlayback from "@/actions/Player/pausePlayback";
 import resumePlayback from "@/actions/Player/resumePlayback";
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface PlayerControlsProps {
     currentTrack: CurrentTrack;
@@ -63,6 +63,15 @@ export default function PlayerControls({ currentTrack, isTrackLiked }: PlayerCon
             await fetchCurrentTrack();
         }, 400);
     };
+
+    // Polling 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            fetchCurrentTrack();
+        }, 5000); // Polling toutes les 5 secondes
+
+        return () => clearInterval(interval); // Nettoyage à la désactivation du composant
+    }, []);
   
     return (
         <div className="flex justify-between h-[72px] text-white">
