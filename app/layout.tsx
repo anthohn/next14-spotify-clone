@@ -5,7 +5,7 @@ import Sidebar from '@/app/components/Sidebar'
 import { getServerSession } from 'next-auth';
 import SessionProvider  from './components/SessionProvider';
 import Header from '@/app/components/Header'
-import BottomBar from '@/app/components/BottomBar'
+import BottomBar from '@/app/components/Player/BottomBar'
 
 const inter = Inter({ subsets: ['latin'] })
 

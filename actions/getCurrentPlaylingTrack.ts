@@ -16,6 +16,7 @@ const getCurrentPlaylingTrack = async (): Promise<CurrentTrack> => {
       },
     });
     const data = await response.json();
+    
   return (data as any) || [];
 
 };
