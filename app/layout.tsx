@@ -24,10 +24,10 @@ export default async function RootLayout({
     <html lang="fr">
       <body suppressHydrationWarning={true} className={inter.className}>
         <SessionProvider session={session}>
-          <div className='flex flex-col h-screen space-y-2 p-2'>
-            <div className='flex flex-grow space-x-2 '>
+          <div className='flex flex-col space-y-2 p-2 h-screen'>
+            <div className='flex flex-grow space-x-2 h-96'>
               <Sidebar />
-              <div className='flex flex-grow flex-col rounded-lg bg-[#121212]'> 
+              <div className='flex flex-grow flex-col rounded-lg bg-[#121212] overflow-y-auto scrollbar scrollbar-thumb-neutral-600 hover:scrollbar-thumb-neutral-500'> 
                 <Header />
                 {children}
               </div>

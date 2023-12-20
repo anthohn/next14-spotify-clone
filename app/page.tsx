@@ -3,11 +3,11 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default async function Home() {
-  // const userShows = await getUserShows();
+  const userShows = await getUserShows();
 
   return (
     <>
-      {/* <div className="px-6">
+      <div className="px-6">
         <div>
           <h1 className="text-white text-[28px] font-extrabold">Bonjour</h1>
         </div>
@@ -39,7 +39,7 @@ export default async function Home() {
           ))}
           </div>
         </div>
-      </div> */}
+      </div>
     </>
   );
 }

@@ -8,7 +8,7 @@ const getPlaylists = async (): Promise<Playlist[]> => {
   const userSession  = await getServerSession(authOptions);
   const token = userSession.accessToken
 
-  const response = await fetch(`https://api.spotify.com/v1/me/playlists?limit=2`, {
+  const response = await fetch(`https://api.spotify.com/v1/me/playlists`, {
     headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',

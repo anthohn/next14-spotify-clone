@@ -10,6 +10,7 @@ export interface Artist {
 export interface Track {
   id: string;
   name: string;
+  uri: string;
   duration_ms: number;
   href: {
     spotify: string;

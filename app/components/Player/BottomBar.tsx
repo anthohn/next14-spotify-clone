@@ -5,7 +5,7 @@ import PlayerControls from '@/app/components/Player/PlayerControls';
 import getPlaybackState from '@/actions/Player/getPlaybackState'
 
 
-export default async function ListenBar() {
+export default async function BottomBar() {
     const currentTrack = await getCurrentPlayingTrack();
     const isTrackLiked = await checkTrackLike(currentTrack.item.id);
     const playbackState = await getPlaybackState();

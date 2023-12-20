@@ -70,7 +70,7 @@ export default function PlayerControls({ currentTrack, isTrackLiked, playbackSta
     useEffect(() => {
         const interval = setInterval(() => {
             fetchCurrentTrack();
-        }, 5000); // Polling toutes les 5 secondes
+        }, 1000); // Polling toutes les 5 secondes
 
         return () => clearInterval(interval); // Nettoyage à la désactivation du composant
     }, []);

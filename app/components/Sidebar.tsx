@@ -61,7 +61,7 @@ export default async function Sidebar() {
                         {userPlaylists.map((userPlaylist) => (
                             <Link 
                                 href={`/playlist/${userPlaylist.id}`} rel="noopener noreferrer" key={`${userPlaylist.id}`} 
-                                className="flex hover:bg-neutral-900 w-full rounded items-center py-2 space-x-3 hover:cursor-default"> 
+                                className="flex hover:bg-neutral-900 w-full rounded items-center py-2 space-x-3 hover:cursor-pointer"> 
                                 <Image 
                                     src={userPlaylist.images[0]?.url} alt={userPlaylist.name} 
                                     className="rounded ml-2" 
@@ -72,7 +72,7 @@ export default async function Sidebar() {
                                 />
                                 <div className="flex-grow flex-col">
                                     <p className="flex-grow font-semibold text-sm text-neutral-100"> {userPlaylist.name}</p>
-                                <div className="flex space-x-2 font-normal">
+                                <div className="flex space-x-1 text-[13px] font-medium">
                                     <p>Playlist</p>
                                     <p> • </p>
                                     <p>{ userPlaylist.owner.display_name }</p>

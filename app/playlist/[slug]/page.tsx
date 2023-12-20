@@ -1,22 +1,21 @@
 import getPlaylist from "@/actions/getPlaylist";
 import Image from 'next/image';
-import formatDistanceToNow from 'date-fns/formatDistanceToNow';
+import Tracks from '@/app/playlist/[slug]/tracks';
 
 export default async function TopTracksPage({params} : {params : { slug: string }}) {
 
   const playlist_id = params.slug
   const playlist = await getPlaylist(playlist_id);
-  const tracks = playlist.tracks.items;
 
   return (
     <>
       <title>{`${playlist.name} - playlist by ${playlist.owner.display_name}`}</title>
-      <div className='flex flex-col w-full rounded-lg overflow-y-auto scrollbar scrollbar-thumb-neutral-600 hover:scrollbar-thumb-neutral-500'>
+      <div className='flex flex-col w-full rounded-lg'>
         <div className="flex px-6 py-5 w-full space-x-5 ">
           <Image src={playlist.images[0]?.url} alt={playlist.name} className="rounded" priority={true} width={750} height={750} style={{ width: 230, height: 'auto'}}  />
           <div className='flex flex-col  justify-end'>
             <p className="text-neutral-200 text-sm">Playlist</p>
-            <p className="text-neutral-100 text-[90px] font-bold">{playlist.name}</p>
+            <p className="text-neutral-100 sm:text-[40px]  xl:text-[70px] font-bold">{playlist.name}</p>
             <div className='flex space-x-1 items-center text-[13px]'>
               <p className="text-neutral-100  font-bold">{playlist.owner.display_name}</p>
               <p className="text-neutral-100">•</p>
@@ -48,32 +47,8 @@ export default async function TopTracksPage({params} : {params : { slug: string 
                 <svg data-encore-id="icon" role="img" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" ><path d="M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"></path><path d="M8 3.25a.75.75 0 0 1 .75.75v3.25H11a.75.75 0 0 1 0 1.5H7.25V4A.75.75 0 0 1 8 3.25z"></path></svg>
               </div>
             </div>
-            <div className="border-t border-neutral-700 pt-6">
-              {tracks.map((track, index) => (
-                <div key={index} className="py-2 text-neutral-200 hover:bg-[#2A2A2A] flex w-full justify-between rounded items-center px-7 ">
-                  <div className=" w-5/12 flex space-x-4 items-center ">
-                    <p>{index + 1}</p>
-                    <Image src={track.track.album.images[0]?.url} alt={track.track.name} className="rounded" priority={true} width={45} height={45} style={{ width: 40, height: 'auto'}}  />
-                    <div className="flex flex-col">
-                      {track.track.name}
-                      <p className="text-neutral-500">{track.track.artists.map((artist, artistIndex) => (
-                        <span key={artistIndex}>{artist.name}</span>
-                      ))}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="w-2/12">
-                    {track.track.album.name}
-                  </div>
-                  <div className="w-2/12">
-                    {formatDistanceToNow(new Date(track.added_at), { addSuffix: true })}
-                  </div>
-                  <div className="w-1/12 flex justify-end">
-                  {`${Math.floor(track.track.duration_ms / 60000)}:${(track.track.duration_ms % 60000 / 1000).toFixed(0).padStart(2, '0')}`}
-                  </div>
-                </div>
-              ))}
-            </div>
+            <Tracks playlist={playlist} />     
+            
           </div>
         </div>
       </div>       
