@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Spotify Clone
 
-## Getting Started
+This project was created to apply my Next.js and NextAuth.js knowledge by cloning Spotify web app.
 
-First, run the development server:
+## Overview
+![image](https://github.com/anthohn/next14-spotify-clone/assets/75019251/2e291010-7d3f-4963-ae0e-d6c17cf1bf0b)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Planned Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Spotify Authentication**: Users can log in with their Spotify accounts using the Spotify API.
+- **Playlists**: Display the user's playlist on sidebar.
+- **Playlists content**: Display playlist tracks.
+- **Player Controls**: User can pause, play, skip, previous music and change on timeline.
+- soon ..
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Technologies Used
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- [Next.js](https://nextjs.org/) - React framework for server-rendered React applications.
+- [NextAuth.js](https://next-auth.js.org/) - Authentication library for Next.js.
+- [Spotify API](https://developer.spotify.com/documentation/web-api/) - Access Spotify user data.
 
-## Learn More
+## Technologies Version
 
-To learn more about Next.js, take a look at the following resources:
+| Technologie | Version        |
+|-------------|----------------|
+| Next.js     | 14.0.4         |
+| NextAuth.js | 4.24.5         |
+| TailwindCSS | 3.3.0          |
+| npm         | 10.2.4         |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Development Environment
 
-## Deploy on Vercel
+1. Clone the repository:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+    ```bash
+    git clone https://github.com/anthohn/next14-spotify-clone.git
+    ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+2. Install dependencies:
+
+    ```bash
+    cd next14-spotify-clone
+    npm install
+    ```
+
+3. Set up environment variables:
+
+    Create a `.env` file in the root directory and add your Spotify API credentials:
+
+    ```env
+    NEXTAUTH_URL="http://localhost:3000"
+    NEXTAUTH_SECRET="your-next-auth-secret"
+
+    SPOTIFY_CLIENT_ID="your-client-id"
+    SPOTIFY_CLIENT_SECRET="your-client-secret"
+    ```
+
+    Replace `your-client-id` and `your-client-secret` with your Spotify application credentials.
+   
+    Replace `your-next-auth-secret` with a generated secret key. You can generate one using the following OpenSSL command:
+    ```bash
+    openssl rand -base64 32
+    ````
+
+5. Run the application:
+
+    ```bash
+    npm run dev
+    ```
+
+6. Open your browser and navigate to [http://localhost:3000](http://localhost:3000).
+
+## Contributing
+
+Contributions are welcome! If you find any bugs or have suggestions for improvement, please open an issue or submit a pull request.
