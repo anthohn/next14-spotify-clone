@@ -1,7 +1,6 @@
 "use server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth.js";
-import { revalidatePath } from "next/cache";
 
 const skipToNext = async () => {
     
@@ -18,6 +17,5 @@ const skipToNext = async () => {
     if (!response.ok) {
       console.error('Erreur lors du skip de la piste suivante:', response.statusText);
     }
-    // revalidatePath ('/')
 };
 export default skipToNext;

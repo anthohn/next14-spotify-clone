@@ -1,15 +1,10 @@
 'use client'
 import { signIn, signOut, useSession  } from "next-auth/react";
 import Image from "next/image";
-import { initFlowbite } from "flowbite";
-import { useEffect } from "react";
 
 export default function Header() {
     const { data: session } = useSession();
     const userProfileImage = session?.user?.image;
-    useEffect(() => {
-        initFlowbite();
-      }, []);
 
     if (session) {
         return (

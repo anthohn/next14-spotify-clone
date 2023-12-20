@@ -22,7 +22,7 @@ export default async function RootLayout({
   const session = await getServerSession();
   return (
     <html lang="fr">
-      <body className={inter.className}>
+      <body suppressHydrationWarning={true} className={inter.className}>
         <SessionProvider session={session}>
           <div className='flex flex-col h-screen space-y-2 p-2'>
             <div className='flex flex-grow space-x-2 '>
