@@ -14,6 +14,8 @@ const pausePlayback = async () => {
         'Content-Type': 'application/json',
       },
     });
-    return response; 
+    if (!response.ok) {
+      console.error('Erreur lors du pause:', response.statusText);
+    }
 };
 export default pausePlayback;

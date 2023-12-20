@@ -2,18 +2,20 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth.js";
 
-const skipToPrevious = async () => {
+const resumePlayback = async () => {
     
   const userSession  = await getServerSession(authOptions);
   const token = userSession.accessToken
 
-  const response = await fetch(`https://api.spotify.com/v1/me/player/previous`, {
-    method: 'POST',  // Important to add Post
+  const response = await fetch(`https://api.spotify.com/v1/me/player/play`, {
+    method: 'PUT',
     headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
     });
-    return response; 
+    if (!response.ok) {
+      console.error('Erreur lors du play:', response.statusText);
+    }
 };
-export default skipToPrevious;
+export default resumePlayback;
