@@ -1,34 +1,42 @@
 'use client'
-import getCurrentPlayingTrack from "@/actions/getCurrentPlayingTrack";
-import { Track, CurrentTrack, GetPlaybackState } from '@/types';
+import getPlaybackState from "@/actions/Player/getPlaybackState";
+import { Track, CurrentTrack } from '@/types';
 import skipToNext from "@/actions/Player/skipToNext";
 import skipToPrevious from "@/actions/Player/skipToPrevious";
 import pausePlayback from "@/actions/Player/pausePlayback";
 import resumePlayback from "@/actions/Player/resumePlayback";
-import getPlaybackState from "@/actions/Player/getPlaybackState"
 import seekToPosition from "@/actions/Player/seekToPosition";
+import toogleShuffle from "@/actions/Player/toogleShuffle";
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 
 interface PlayerControlsProps {
-    currentTrack: CurrentTrack;
+    // currentTrack: CurrentTrack;
+    playbackState: CurrentTrack;
     isTrackLiked: Track;
-    playbackState: GetPlaybackState;
 }
 
-export default function PlayerControls({ currentTrack, isTrackLiked, playbackState }: PlayerControlsProps) {
 
-    const [currentTrackInfo, setCurrentTrackInfo] = useState({
-        isPlaying: currentTrack.is_playing,
-        image: currentTrack.item.album.images[0]?.url,
-        trackName: currentTrack.item.name,
-        artists: currentTrack.item.album.artists
+export default function PlayerControls({ playbackState, isTrackLiked}: PlayerControlsProps) {
+
+    // console.log(currentTrack.shuffle_state)
+    console.log(playbackState.shuffle_state)
+
+
+
+    const [playbackStateInfo, setCurrentTrackInfo] = useState({
+        isShuffle: playbackState.shuffle_state,
+        isPlaying: playbackState.is_playing,
+        image: playbackState.item.album.images[0]?.url,
+        trackName: playbackState.item.name,
+        artists: playbackState.item.album.artists
     });
 
-    const fetchCurrentTrack = async () => {
+    const fetchPlaybackState = async () => {
         try {
-            const newTrack = await getCurrentPlayingTrack();
+            const newTrack = await getPlaybackState();
             setCurrentTrackInfo({
+                isShuffle: newTrack.shuffle_state,
                 isPlaying: newTrack.is_playing,
                 image: newTrack.item.album.images[0]?.url,
                 trackName: newTrack.item.name,
@@ -40,7 +48,7 @@ export default function PlayerControls({ currentTrack, isTrackLiked, playbackSta
     };
     const togglePlayback = async () => {
         try {
-            if (currentTrackInfo.isPlaying) {
+            if (playbackStateInfo.isPlaying) {
                 await pausePlayback();
             } else {
                 await resumePlayback();
@@ -53,24 +61,41 @@ export default function PlayerControls({ currentTrack, isTrackLiked, playbackSta
             console.error('Erreur lors de la lecture/pause:', error);
         }
     };
+
+    const handleToggleShuffle = async () => {
+        try {
+            if (playbackStateInfo.isShuffle) {
+                await toogleShuffle(false);
+            } else {
+                await toogleShuffle(true);
+            }
+            setCurrentTrackInfo(prevTrackInfo => ({
+                ...prevTrackInfo,
+                isShuffle: !prevTrackInfo.isShuffle
+            }));
+        } catch (error) {
+            console.error('Erreur lors de suffle:', error);
+        }
+    };
+
     const handleSkipToPrevious = async () => {
         await skipToPrevious();
         setTimeout(async () => {
-            await fetchCurrentTrack();
+            await fetchPlaybackState();
         }, 400);
     };
     const handleSkipToNext = async () => {
         await skipToNext();
         setTimeout(async () => {
-            await fetchCurrentTrack();
+            await fetchPlaybackState(); playbackStateInfo
         }, 400);
     };
 
     // Polling 
     useEffect(() => {
         const interval = setInterval(() => {
-            fetchCurrentTrack();
-        }, 1000); // Polling toutes les 5 secondes
+            fetchPlaybackState();
+        }, 3000); // Polling toutes les 3 secondes
 
         return () => clearInterval(interval); // Nettoyage à la désactivation du composant
     }, []);
@@ -119,16 +144,15 @@ export default function PlayerControls({ currentTrack, isTrackLiked, playbackSta
             }));
         });
     };
-    
   
     return (
         <div className="flex justify-between h-[72px] text-white">
             <div className="w-3/12 flex space-x-4 items-center p-[7px]">
-            <Image src={currentTrackInfo.image} alt={currentTrack.item.name} className="rounded" priority={true} width={60} height={60} style={{ width: 56, height: 'auto'}}  />
+            <Image src={playbackStateInfo.image} alt={playbackStateInfo.trackName} className="rounded" priority={true} width={60} height={60} style={{ width: 56, height: 'auto'}}  />
                 <div className="flex flex-col justify-center">
-                    <p className="text-[14px] font-medium">{currentTrackInfo.trackName}</p>
+                    <p className="text-[14px] font-medium">{playbackStateInfo.trackName}</p>
                     <p className="text-[10.5px] font-medium text-neutral-400">
-                        {currentTrackInfo.artists.map((artist, index) => (
+                        {playbackStateInfo.artists.map((artist, index) => (
                             <span key={index}>{(index ? ', ' : '') + artist.name}</span>
                         ))}
                     </p>
@@ -143,15 +167,25 @@ export default function PlayerControls({ currentTrack, isTrackLiked, playbackSta
             </div>
             <div className="flex flex-col flex-grow items-center pt-[9px] space-y-[7px]">
                 <div className="flex space-x-[24px] items-center h-8">
-                    <button>
-                        <svg className="fill-[#B2B2B2]" data-encore-id="icon" role="img" width="16" height="16" aria-hidden="true" viewBox="0 0 16 16"><path d="M13.151.922a.75.75 0 1 0-1.06 1.06L13.109 3H11.16a3.75 3.75 0 0 0-2.873 1.34l-6.173 7.356A2.25 2.25 0 0 1 .39 12.5H0V14h.391a3.75 3.75 0 0 0 2.873-1.34l6.173-7.356a2.25 2.25 0 0 1 1.724-.804h1.947l-1.017 1.018a.75.75 0 0 0 1.06 1.06L15.98 3.75 13.15.922zM.391 3.5H0V2h.391c1.109 0 2.16.49 2.873 1.34L4.89 5.277l-.979 1.167-1.796-2.14A2.25 2.25 0 0 0 .39 3.5z"></path><path d="m7.5 10.723.98-1.167.957 1.14a2.25 2.25 0 0 0 1.724.804h1.947l-1.017-1.018a.75.75 0 1 1 1.06-1.06l2.829 2.828-2.829 2.828a.75.75 0 1 1-1.06-1.06L13.109 13H11.16a3.75 3.75 0 0 1-2.873-1.34l-.787-.938z"></path></svg>
+
+                    <button onClick={handleToggleShuffle}>
+                        {playbackStateInfo.isShuffle ? (
+                                <svg className="fill-[#1ED760]" data-encore-id="icon" role="img" width="16" height="16" aria-hidden="true" viewBox="0 0 16 16">
+                                    <path d="M13.151.922a.75.75 0 1 0-1.06 1.06L13.109 3H11.16a3.75 3.75 0 0 0-2.873 1.34l-6.173 7.356A2.25 2.25 0 0 1 .39 12.5H0V14h.391a3.75 3.75 0 0 0 2.873-1.34l6.173-7.356a2.25 2.25 0 0 1 1.724-.804h1.947l-1.017 1.018a.75.75 0 0 0 1.06 1.06L15.98 3.75 13.15.922zM.391 3.5H0V2h.391c1.109 0 2.16.49 2.873 1.34L4.89 5.277l-.979 1.167-1.796-2.14A2.25 2.25 0 0 0 .39 3.5z"></path><path d="m7.5 10.723.98-1.167.957 1.14a2.25 2.25 0 0 0 1.724.804h1.947l-1.017-1.018a.75.75 0 1 1 1.06-1.06l2.829 2.828-2.829 2.828a.75.75 0 1 1-1.06-1.06L13.109 13H11.16a3.75 3.75 0 0 1-2.873-1.34l-.787-.938z"></path>
+                                </svg>
+                            ) : (
+                                <svg className="fill-[#B2B2B2]" data-encore-id="icon" role="img" width="16" height="16" aria-hidden="true" viewBox="0 0 16 16">
+                                    <path d="M13.151.922a.75.75 0 1 0-1.06 1.06L13.109 3H11.16a3.75 3.75 0 0 0-2.873 1.34l-6.173 7.356A2.25 2.25 0 0 1 .39 12.5H0V14h.391a3.75 3.75 0 0 0 2.873-1.34l6.173-7.356a2.25 2.25 0 0 1 1.724-.804h1.947l-1.017 1.018a.75.75 0 0 0 1.06 1.06L15.98 3.75 13.15.922zM.391 3.5H0V2h.391c1.109 0 2.16.49 2.873 1.34L4.89 5.277l-.979 1.167-1.796-2.14A2.25 2.25 0 0 0 .39 3.5z"></path><path d="m7.5 10.723.98-1.167.957 1.14a2.25 2.25 0 0 0 1.724.804h1.947l-1.017-1.018a.75.75 0 1 1 1.06-1.06l2.829 2.828-2.829 2.828a.75.75 0 1 1-1.06-1.06L13.109 13H11.16a3.75 3.75 0 0 1-2.873-1.34l-.787-.938z"></path>
+                                </svg>
+                            )}
                     </button>
+
                     <button onClick={handleSkipToPrevious}>
                         <svg className="fill-[#B2B2B2]" data-encore-id="icon" role="img" width="16" height="16" aria-hidden="true" viewBox="0 0 16 16"><path d="M3.3 1a.7.7 0 0 1 .7.7v5.15l9.95-5.744a.7.7 0 0 1 1.05.606v12.575a.7.7 0 0 1-1.05.607L4 9.149V14.3a.7.7 0 0 1-.7.7H1.7a.7.7 0 0 1-.7-.7V1.7a.7.7 0 0 1 .7-.7h1.6z"></path></svg>
                     </button>
                     {/* playling button */}
                     <button className="bg-[#FFFFFF] p-[8px] rounded-full" onClick={togglePlayback}>
-                        {currentTrackInfo.isPlaying ? (
+                        {playbackStateInfo.isPlaying ? (
                             // Icône de pause
                             <svg data-encore-id="icon" role="img" width="16" height="16" aria-hidden="true" viewBox="0 0 16 16">
                                 <path d="M2.7 1a.7.7 0 0 0-.7.7v12.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7H2.7zm8 0a.7.7 0 0 0-.7.7v12.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7h-2.6z"></path>

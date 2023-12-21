@@ -86,6 +86,7 @@ export interface SpotifyEpisode {
 }
 
 export interface CurrentTrack {
+  shuffle_state: boolean;
   timestamp: number;
   context: {
     external_urls: {
@@ -100,7 +101,6 @@ export interface CurrentTrack {
     album: {
       album_type: string;
       artists: Artist[];
-      available_markets: string[];
       external_urls: {
         spotify: string;
       };
@@ -114,9 +114,6 @@ export interface CurrentTrack {
       type: string;
       uri: string;
     };
-    available_markets: string[];
-    // Autres propriétés de l'élément de piste
-    // ...
     disc_number: number;
     duration_ms: number;
     explicit: boolean;
@@ -146,6 +143,7 @@ export interface CurrentTrack {
 }
 
 export interface GetPlaybackState {
+  shuffle_state: boolean;
   timestamp: number;
   context: {
     external_urls: {
@@ -160,7 +158,6 @@ export interface GetPlaybackState {
     album: {
       album_type: string;
       artists: Artist[];
-      available_markets: string[];
       external_urls: {
         spotify: string;
       };
@@ -174,9 +171,6 @@ export interface GetPlaybackState {
       type: string;
       uri: string;
     };
-    available_markets: string[];
-    // Autres propriétés de l'élément de piste
-    // ...
     disc_number: number;
     duration_ms: number;
     explicit: boolean;
